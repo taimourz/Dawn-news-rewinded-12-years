@@ -1,0 +1,28 @@
+footer {
+  padding: 20px 30px;
+  background-color: #000;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #fff;
+}
+
+footer img {
+  margin: 10px 0;
+}
+
+.footerlinks {
+  padding-top: 20px;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 20px;
+  border-top: 2px solid #fff;
+}
+
+.footerlinks ul {
+  list-style: none;
+}
+
+.footerlinks a {
+  color: #fff;
+  font-size: 14px;
+}
