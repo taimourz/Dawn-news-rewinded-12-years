@@ -1,15 +1,12 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useState } from 'react'
 import  Header  from './components/Header/Header.jsx'
 import  Footer  from './components/Footer/Footer.jsx'
-import  Frontpage from './components/Frontpage/Frontpage.jsx'
-
-
+import  NewsCard from './components/NewsCard/NewsCard.jsx'
 
 function App() {
   const [archive, setArchive] = useState(null)
   const [isLoadingArchive, setIsLoadingArchive] = useState(true)
   const [archiveError, setArchiveError] = useState(null)
-  
 
   useEffect(() => {
     const loadArchive = async () => {
@@ -37,19 +34,10 @@ function App() {
   const sections = archive?.sections ?? {}
 
   const frontPageArticles = sections['front-page'] ?? []
-  const heroArticle = frontPageArticles[0] ?? null;
-  const relatedFrontPage = frontPageArticles.slice(1, 4)
-
-  const mustReadStories = (sections.national ?? []).slice(0, 3)
-  const buzzStories = (sections.business ?? []).slice(0, 8)
-
-  const extendedSections = useMemo(
-    () => [
-      { key: 'back-page', label: 'Back Page', items: (sections['back-page'] ?? []).slice(0, 5) },
-      { key: 'editorial', label: 'Editorial', items: (sections.editorial ?? []).slice(0, 5) },
-    ],
-    [sections],
-  )
+  const mustReadStories = sections['national'] ?? []
+  const buzzStories = sections['business'] ?? []
+  const backPageStories = sections['back-page'] ?? []
+  const editorialStories = sections['editorial'] ?? []
 
   return (
     <div className="app-shell">
@@ -59,79 +47,29 @@ function App() {
       archiveError={archiveError}
       archiveDate={archive?.date}
     />
-
-
       <main>
-
-      <Frontpage 
-        heroArticle={heroArticle}
-        relatedFrontPage={relatedFrontPage}
-      />
-
-        <aside className="mainTwo">
-          <p className="section-label">National Highlights</p>
-          {mustReadStories.length === 0 && (
-            <p className="status-message">No national stories right now.</p>
-          )}
-          {mustReadStories.map((story) => (
-            <div key={story.title} className="must-read-card">
-              {story.imageUrl && <img src={story.imageUrl} alt={story.title} width="280" />}
-              <h4>{story.title}</h4>
-              {!story.imageUrl && <p className="story-summary">{story.summary}</p>}
-            </div>
-          ))}
-          <hr />
-        </aside>
-
-        <section className="mainThree">
-          <p className="section-label">Business Briefing</p>
-          {buzzStories.length === 0 && (
-            <p className="status-message">Business desk has no updates yet.</p>
-          )}
-          {buzzStories.map((story, index) => (
-            <div key={story.title}>
-              <div className="buzz-row">
-                <div>
-                  <h4>{story.title}</h4>
-                  <p className="story-summary">{story.summary}</p>
-                </div>
-                {story.imageUrl && (
-                  <img src={story.imageUrl} alt={story.title} width="80" height="80" />
-                )}
-              </div>
-              {index < buzzStories.length - 1 && <hr />}
-            </div>
-          ))}
-        </section>
-
-        <section className="mainFour">
-
-        </section>
-
-        <section className="archive-section-grid">
-          {extendedSections.map((section) => {
-            if (section.items.length === 0) return null
-            return (
-              <div key={section.key} className="archive-section">
-                <p className="section-label">{section.label}</p>
-                <ul>
-                  {section.items.map((item) => (
-                    <li key={item.title}>
-                      <a href={item.url} target="_blank" rel="noreferrer">
-                        {item.title}
-                      </a>
-                      {item.summary && <p className="story-summary">{item.summary}</p>}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            )
-          })}
-        </section>
+        <NewsCard
+          newsStories={frontPageArticles}
+          storyType={"Front Page"}
+        />
+        <NewsCard
+          newsStories={mustReadStories}
+          storyType={"National Highlights"}
+        />
+        <NewsCard
+          newsStories={buzzStories}
+          storyType={"Business Briefing"}
+        />
+        <NewsCard
+          newsStories={backPageStories}
+          storyType="Back Page"
+        />
+        <NewsCard
+          newsStories={editorialStories}
+          storyType="Editorial"
+        />
       </main>
-
       <Footer/>
-
     </div>
   )
 }
