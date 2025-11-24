@@ -85,10 +85,21 @@ class DawnScraper {
       );
 
       console.log(`  Fetching: ${url}`);
-      await page.goto(url, {
-        waitUntil: 'networkidle2',
-        timeout: 30000
-      });
+      try {
+          await page.goto(url, {
+            waitUntil: 'networkidle2',
+            timeout: 60000
+          });
+        } catch (e) {
+          console.warn(` Timeout or navigation error for ${url}, Error ${e}, retrying...`);
+          try {
+            await page.goto(url, { waitUntil: 'networkidle2', timeout: 60000 });
+          } catch (err2) {
+            console.error(` Failed again: ${err2.message}`);
+            await page.close();
+            throw err2;
+          }
+        }      
 
       const html = await page.content();
       await page.close();
