@@ -24,7 +24,7 @@ export default function NewsCard({newsStories, storyType}){
                     onError={() => handleImageError(story.title)}
                   />
                 )}
-                <h4>{story.title}</h4>
+                <h4> <a href={story.url}>{story.title}</a></h4>
                 {(!story.imageUrl || failedImages.has(story.title)) && (
                   <p className="story-summary">{story.summary}</p>
                 )}

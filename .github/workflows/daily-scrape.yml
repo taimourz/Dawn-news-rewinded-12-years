@@ -1,0 +1,47 @@
+name: Daily News Scrape
+
+on:
+  workflow_dispatch:
+    inputs:
+      scrape_date:
+        description: 'Date to scrape (YYYY-MM-DD). Leave empty for today (12 years ago).'
+        required: false
+        default: ''
+
+jobs:
+  scrape-and-build:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          
+      - name: Install dependencies
+        run: npm install
+        
+      - name: Run scraper script
+        run: |
+          if [ -z "${{ github.event.inputs.scrape_date }}" ]; then
+            node src/utilities/scrape.js today
+          else
+            node src/utilities/scrape.js date ${{ github.event.inputs.scrape_date }}
+          fi
+        
+      - name: Commit and push changes
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add public/data/archive.json public/images/*
+          git diff --quiet && git diff --staged --quiet || git commit -m "Update archive for $(date +'%Y-%m-%d')"
+          git push
+          
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./dist
