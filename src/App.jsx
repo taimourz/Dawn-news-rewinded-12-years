@@ -3,16 +3,23 @@ import  Header  from './components/Header/Header.jsx'
 import  Footer  from './components/Footer/Footer.jsx'
 import  NewsCard from './components/NewsCard/NewsCard.jsx'
 
+
 function App() {
   const [archive, setArchive] = useState(null)
   const [isLoadingArchive, setIsLoadingArchive] = useState(true)
   const [archiveError, setArchiveError] = useState(null)
 
+  const API_KEY = import.meta.env.VITE_TAIMOUR_API_KEY;
+  console.log("API_KEY:", API_KEY);
+
   useEffect(() => {
     const loadArchive = async () => {
       try {
-        const response = await fetch('/data/archive.json', {
-          headers: { 'Cache-Control': 'no-cache' },
+        const response = await fetch('https://taimourz-dawnnews12yearsago.hf.space/api/today', {
+          headers: {
+            'Cache-Control': 'no-cache',
+            'x-api-key': API_KEY
+          }
         })
 
         if (!response.ok) {
