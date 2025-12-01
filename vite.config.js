@@ -2,7 +2,7 @@ import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 
 export default defineConfig({
-  base: '/12news/', 
+  base: '/Dawn-news-rewinded-12-years/', 
   plugins: [
     react({
       babel: {

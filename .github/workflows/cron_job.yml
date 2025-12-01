@@ -1,0 +1,40 @@
+name: Trigger API
+
+on:
+  workflow_dispatch:
+    inputs:
+      target_date:
+        description: 'Date to fetch (YYYY-MM-DD). Leave empty for today.'
+        required: false
+        default: ''
+  schedule:
+    - cron: "0 0 * * *"
+
+jobs:
+  call-api:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+
+    steps:
+      - name: Set API URL
+        id: set_url
+        run: |
+          if [ -z "${{ github.event.inputs.target_date }}" ]; then
+            URL="https://taimourz-dawnnews12yearsago.hf.space/api/today"
+          else
+            DATE="${{ github.event.inputs.target_date }}"
+            URL="https://taimourz-dawnnews12yearsago.hf.space/api/date/$DATE"
+          fi
+          echo "API_URL=$URL" >> $GITHUB_ENV
+
+      - name: Call Hugging Face API
+        env:
+          API_KEY: ${{ secrets.TAIMOUR_API_KEY }}
+          API_URL: ${{ env.API_URL }}
+        run: |
+          RESPONSE=$(curl -s -o /dev/null -w "%{http_code}" \
+            -H "Cache-Control: no-cache" \
+            -H "x-api-key: $API_KEY" \
+            "$API_URL")
+          echo "API responded with status $RESPONSE"
