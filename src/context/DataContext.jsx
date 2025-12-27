@@ -44,9 +44,13 @@ export function DataProvider({ children }) {
     const getOtherVoicesStories = () => sections["other-voices"] || [];
     const getLettersStories = () => sections["letters"] || [];
     const getBooksAuthorsStories = () => sections["books-authors"] || [];
-    const getBusinessFinanceStories = () => sections["business"] || [];
+    const getBusinessStories = () => sections["business"] || [];
     const getSundayMagzineStories = () => sections["sunday-magazine"] || [];
-    const getIconStories = () => sections["icon"] || [];  
+    const getBusinessFinanceStories = () => sections["business-finance"] || [];  
+    const getEditorialStories = () => sections["editorial"] || [];  
+    const getInternationalStories = () => sections["international"] || [];  
+    const getYoungWorldStories = () => sections["young-world"] || [];  
+    const getIconStories = () => sections["icon"] || [];      
 
 
   return (
@@ -63,7 +67,11 @@ export function DataProvider({ children }) {
             getBooksAuthorsStories,
             getBusinessFinanceStories,
             getSundayMagzineStories,
-            getIconStories
+            getIconStories,
+            getYoungWorldStories,
+            getInternationalStories,
+            getEditorialStories,
+            getBusinessStories
          }}>
       {children}
     </DataContext.Provider>
