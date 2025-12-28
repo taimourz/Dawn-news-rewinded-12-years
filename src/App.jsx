@@ -11,7 +11,7 @@ function App() {
         <div className="app-shell">
           <Header/>
           <Routes>
-            <Route path="/" element={<CategoryCard category="front-page" />} />
+            <Route path="/" element={<CategoryCard category="latest" />} />
 
             <Route path="/front-page" element={<CategoryCard category="latest" />} />
             <Route path="/national" element={<CategoryCard category="national" />} />
@@ -27,7 +27,6 @@ function App() {
             <Route path="/icon" element={<CategoryCard category="icon" />} />
             <Route path="/young-world" element={<CategoryCard category="young-world" />} />
 
-            <Route path="*" element={<CategoryCard category="front-page" />} />
           </Routes>
 
           <Footer />

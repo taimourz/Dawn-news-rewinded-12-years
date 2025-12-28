@@ -12,8 +12,8 @@ export function DataProvider({ children }) {
   useEffect(() => {
   const loadArchive = async () => {
       try {
-      const response = await fetch('https://taimourz-dawnnews12yearsago.hf.space/api/today', {
-      // const response = await fetch('http://localhost:8000/api/today', {          
+      const response = await fetch('https://taimourz-dawnnews.hf.space/api/v1/archive/today', {
+      // const response = await fetch('http://localhost:8000/api/v1/archive/today', {          
           headers: {
           'Cache-Control': 'no-cache',
           'x-api-key': API_KEY
